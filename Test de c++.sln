@@ -1,1 +1,119 @@
+#include <iostream>
+using namespace std;
+
+//fonction qui affiche la grille de jeu
+void afficher(int grille[6][7]) {
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            std::cout << "|" << grille[i][j] << "|";
+        }
+        cout << endl;
+    }
+}
+
+//fonction qui vérifie si la col est bien dans la grille
+bool check_range(int col) {
+    if (col < 0 || col > 6) {
+        cout << "Colonne invalide. Veuillez entrer un nombre entre 0 et 6." << endl;
+        return true;
+    }
+    return false;
+
+}
+//fonction permettant a l'utilisateur de quitter le jeu
+bool quitter(int n) {
+    if (n == -1) {
+        return true;
+    }
+    return false;
+}
+//fonction déterminant a qui est le tour
+void tour_de(int tour) {
+    if (tour % 2 == 0) {
+        cout << "Ou souhaiteriez vous jouer pour 1 ? (-1 pour quitter) ";
+    }
+    else {
+        cout << "Ou souhaiteriez vous jouer pour 2 ? (-1 pour quitter) ";
+    }
+}
+//fonction permettant de savoir si la grille de jeu est pleine ou non
+bool full(int grille[6][7]) {
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            if (grille[i][j] == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+//fonction qui ajoute le chiffre lié au joueur a l'emplacement voulu
+void ajout_grille(int grille[6][7],int tour,int col) {
+    if (tour % 2 == 0) {
+        for (int k = 6; k >= 0; k--) {
+            if (grille[k][col] == 0) {
+                grille[k][col] = 1;
+                break;
+            }
+        }
+    }
+    else {
+        for (int k = 6; k >= 0; k--) {
+            if (grille[k][col] == 0) {
+                grille[k][col] = 2;
+                break;
+            }
+        }
+
+    }
+}
+//fonction pour savoir si le joueur essaie d'empiler la ou c'est deja au maximum
+bool colonne_remplie(int grille[6][7],int col) {
+        if (grille[0][col] != 0) {
+            cout << "Colonne pleine" << endl;
+            return true;
+        }
+    return false;
+}
+
+
+
+
+int main(){
+    //Afficher grille
+    int grille[6][7] = { 0 }; // initialiser une grille de taille 6 et largeur 7
+    std::cout << "Puissance 4" << std::endl;
+    afficher(grille);
+
+
+    int tour = 0;
+    while (true) {
+        int col;
+        tour_de(tour);
+        cin >> col;
+
+        if(quitter(col)){
+            std::cout << "Fin de jeu \n";
+            break;
+        }
+
+        if(check_range(col)){
+            continue;
+        }
+
+        ajout_grille(grille, tour, col);
+        tour++;
+        afficher(grille);
+
+        if (full(grille) == true) {
+            cout << "Grille pleine, fin de jeu" << endl;
+            break;
+        }
+        colonne_remplie(grille, col);
+    }
+    return 0;
+}
+
+
+
 
